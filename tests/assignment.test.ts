@@ -73,6 +73,13 @@ describe('Assignment Management Module', () => {
     // Verify vehicle status
     const vehicle = await prisma.vehicle.findUnique({ where: { id: vehicleId } });
     expect(vehicle?.status).toBe('ASSIGNED');
+
+    // Verify Audit Log
+    const auditLog = await prisma.auditLog.findFirst({
+      where: { action: 'CREATE', resource: 'ASSIGNMENT' },
+    });
+    expect(auditLog).toBeDefined();
+    expect(auditLog?.userId).toBeDefined();
   });
 
   it('should block assigning an already assigned vehicle', async () => {

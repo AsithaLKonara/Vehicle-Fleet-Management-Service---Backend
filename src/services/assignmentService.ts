@@ -1,5 +1,6 @@
 import { prisma } from '../lib/prisma';
 import { CreateAssignmentInput } from '../validators/assignmentValidator';
+import { logAction } from './auditService';
 
 export const getAllAssignments = async () => {
   return prisma.assignment.findMany({
@@ -11,7 +12,7 @@ export const getAllAssignments = async () => {
   });
 };
 
-export const createAssignment = async (input: CreateAssignmentInput) => {
+export const createAssignment = async (input: CreateAssignmentInput, userId: string) => {
   return prisma.$transaction(async (tx) => {
     // 1. Check if vehicle is available
     const vehicle = await tx.vehicle.findUnique({
@@ -33,11 +34,14 @@ export const createAssignment = async (input: CreateAssignmentInput) => {
       data: { status: 'ASSIGNED' },
     });
 
+    // 4. Log Action
+    await logAction(userId, 'CREATE', 'ASSIGNMENT', { assignmentId: assignment.id, vehicleId: input.vehicleId });
+
     return assignment;
   });
 };
 
-export const returnVehicle = async (id: string) => {
+export const returnVehicle = async (id: string, userId: string) => {
   return prisma.$transaction(async (tx) => {
     // 1. Find the assignment
     const assignment = await tx.assignment.findUnique({
@@ -59,6 +63,9 @@ export const returnVehicle = async (id: string) => {
       where: { id: assignment.vehicleId },
       data: { status: 'AVAILABLE' },
     });
+
+    // 4. Log Action
+    await logAction(userId, 'RETURN', 'ASSIGNMENT', { assignmentId: id, vehicleId: assignment.vehicleId });
 
     return updatedAssignment;
   });

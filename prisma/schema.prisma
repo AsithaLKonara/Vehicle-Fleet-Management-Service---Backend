@@ -13,6 +13,7 @@ model User {
   password    String
   role        Role
   assignments Assignment[]
+  auditLogs   AuditLog[]
 }
 
 model Vehicle {
@@ -37,6 +38,17 @@ model Assignment {
 
   vehicle Vehicle @relation(fields: [vehicleId], references: [id])
   driver  User    @relation(fields: [driverId], references: [id])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  action    String
+  resource  String
+  details   Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum Role {

@@ -9,7 +9,7 @@ export const listAssignments = asyncWrapper(async (req: Request, res: Response) 
 
 export const createAssignment = asyncWrapper(async (req: Request, res: Response) => {
   try {
-    const assignment = await assignmentService.createAssignment(req.body);
+    const assignment = await assignmentService.createAssignment(req.body, req.user!.id);
     res.status(201).json({ success: true, data: assignment });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
@@ -18,7 +18,7 @@ export const createAssignment = asyncWrapper(async (req: Request, res: Response)
 
 export const returnVehicle = asyncWrapper(async (req: Request, res: Response) => {
   try {
-    const assignment = await assignmentService.returnVehicle(req.params.id as string);
+    const assignment = await assignmentService.returnVehicle(req.params.id as string, req.user!.id);
     res.status(200).json({ success: true, data: assignment });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
