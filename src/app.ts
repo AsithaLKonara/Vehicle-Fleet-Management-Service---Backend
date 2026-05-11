@@ -7,6 +7,7 @@ import { errorMiddleware } from './middleware/errorMiddleware';
 import { authMiddleware } from './middleware/authMiddleware';
 import { authorize } from './middleware/roleMiddleware';
 import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/userRoutes';
 
 const app = express();
 
@@ -27,6 +28,9 @@ app.get('/health', (req, res) => {
 
 // Auth Routes
 app.use('/auth', authRoutes);
+
+// User Routes
+app.use('/users', userRoutes);
 
 // Protected Test Route
 app.get('/protected-test', authMiddleware, authorize(['ADMIN']), (req, res) => {

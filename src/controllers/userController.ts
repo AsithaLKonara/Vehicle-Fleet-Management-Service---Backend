@@ -1,0 +1,18 @@
+import { Request, Response } from 'express';
+import * as userService from '../services/userService';
+import { asyncWrapper } from '../utils/asyncWrapper';
+
+export const listUsers = asyncWrapper(async (req: Request, res: Response) => {
+  const users = await userService.getAllUsers();
+  res.status(200).json({ success: true, data: users });
+});
+
+export const createUser = asyncWrapper(async (req: Request, res: Response) => {
+  const user = await userService.createUser(req.body);
+  res.status(201).json({ success: true, data: user });
+});
+
+export const updateUser = asyncWrapper(async (req: Request, res: Response) => {
+  const user = await userService.updateUser(req.params.id as string, req.body);
+  res.status(200).json({ success: true, data: user });
+});
