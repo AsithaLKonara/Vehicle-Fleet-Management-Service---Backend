@@ -19,6 +19,12 @@ Production-grade Vehicle Fleet Management System Backend.
 - **Audit Logging**: Critical action tracking for security and accountability.
 - **Operational Dashboard**: Real-time stats and metrics.
 
+## Demo Credentials
+To test the Role-Based Access Control (RBAC), use the following seeded accounts:
+- **Admin**: `admin@fleet.com` / `admin123`
+- **Fleet Manager**: `manager@fleet.com` / `manager123`
+- **Fleet Staff**: `staff@fleet.com` / `staff123`
+
 ## Getting Started
 
 ### Prerequisites
