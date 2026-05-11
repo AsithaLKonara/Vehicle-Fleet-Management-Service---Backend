@@ -23,7 +23,17 @@ const app = express();
 // Security & Infrastructure Middleware
 app.use(correlationIdMiddleware);
 app.use(helmet());
-app.use(cors({ origin: config.CORS_ORIGIN }));
+const corsOptions = {
+  origin: [
+    "http://localhost:3000",
+    "https://vehicle-fleet-management-service-fr.vercel.app",
+    config.CORS_ORIGIN
+  ],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json({ limit: '10kb' })); // Limit request size
 app.use(requestLogger);
 
