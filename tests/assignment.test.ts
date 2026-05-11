@@ -106,7 +106,7 @@ describe('Assignment Management Module', () => {
       });
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body.message).toBe('Vehicle is not available for assignment');
+    expect(res.body.message).toBe('Vehicle is not available for assignment or does not exist');
   });
 
   it('should return a assigned vehicle', async () => {

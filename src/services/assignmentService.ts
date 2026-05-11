@@ -15,16 +15,22 @@ export const getAllAssignments = async () => {
 
 export const createAssignment = async (input: CreateAssignmentInput, userId: string) => {
   return prisma.$transaction(async (tx) => {
-    // 1. Check if vehicle is available
-    const vehicle = await tx.vehicle.findUnique({
-      where: { id: input.vehicleId },
+    // 1. Atomic update to check availability and mark as assigned simultaneously
+    const updateResult = await tx.vehicle.updateMany({
+      where: {
+        id: input.vehicleId,
+        status: 'AVAILABLE',
+      },
+      data: {
+        status: 'ASSIGNED',
+      },
     });
 
-    if (!vehicle || vehicle.status !== 'AVAILABLE') {
-      throw new Error('Vehicle is not available for assignment');
+    if (updateResult.count === 0) {
+      throw new Error('Vehicle is not available for assignment or does not exist');
     }
 
-    // 2. Create assignment
+    // 2. Create assignment record
     const assignment = await tx.assignment.create({
       data: {
         ...input,
@@ -32,13 +38,7 @@ export const createAssignment = async (input: CreateAssignmentInput, userId: str
       },
     });
 
-    // 3. Update vehicle status
-    await tx.vehicle.update({
-      where: { id: input.vehicleId },
-      data: { status: 'ASSIGNED' },
-    });
-
-    // 4. Log Action
+    // 3. Log Action
     await logAction(userId, 'CREATE', 'ASSIGNMENT', assignment.id, { vehicleId: input.vehicleId }, tx);
 
     return assignment;
