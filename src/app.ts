@@ -33,7 +33,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+// Handle OPTIONS preflight for all routes - Express 5 requires named wildcard
+app.options("/{*path}", cors(corsOptions));
 app.use(express.json({ limit: '10kb' })); // Limit request size
 app.use(requestLogger);
 
