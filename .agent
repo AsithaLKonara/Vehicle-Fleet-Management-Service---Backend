@@ -1,0 +1,31 @@
+# Backend Agent Rules
+
+## Naming Conventions
+- Controllers: camelCase (e.g., `userController.ts`)
+- Services: camelCase (e.g., `authService.ts`)
+- Routes: camelCase (e.g., `vehicleRoutes.ts`)
+- Middleware: camelCase (e.g., `authMiddleware.ts`)
+
+## Architecture & Standards
+- Clean Architecture: Keep business logic in Services, not Controllers.
+- Use Prisma for database interactions.
+- Use Zod for request body/param validation.
+- Atomicity: Use Prisma transactions for critical workflows (like assignments).
+- Never ignore edge cases or errors.
+
+## Git Commit Strategy
+- prefix: `feat:` for new features
+- prefix: `fix:` for bug fixes
+- prefix: `chore:` for setup/dependencies
+- prefix: `docs:` for documentation
+- prefix: `test:` for testing
+- prefix: `ci:` for CI/CD changes
+
+## Testing Strategy
+- Unit tests for services.
+- Integration tests for API endpoints.
+- Ensure 100% coverage for transactional logic.
+
+## Success Criteria
+- Code must build successfully (`npm run build`).
+- Database migrations must be consistent with the schema.
