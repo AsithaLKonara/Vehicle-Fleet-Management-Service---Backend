@@ -62,9 +62,13 @@ export const returnVehicle = async (id: string, userId: string) => {
       data: { returnedAt: new Date() },
     });
 
-    // 3. Update vehicle status
-    await tx.vehicle.update({
-      where: { id: assignment.vehicleId },
+    // 3. Update vehicle status - only if it is currently ASSIGNED
+    // This prevents accidentally marking a vehicle as AVAILABLE if it was moved to MAINTENANCE
+    await tx.vehicle.updateMany({
+      where: { 
+        id: assignment.vehicleId,
+        status: 'ASSIGNED'
+      },
       data: { status: 'AVAILABLE' },
     });
 

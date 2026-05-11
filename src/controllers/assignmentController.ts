@@ -11,8 +11,9 @@ export const createAssignment = asyncWrapper(async (req: Request, res: Response)
   try {
     const assignment = await assignmentService.createAssignment(req.body, req.user!.id);
     res.status(201).json({ success: true, data: assignment });
-  } catch (error: any) {
-    res.status(400).json({ success: false, message: error.message });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    res.status(400).json({ success: false, message });
   }
 });
 

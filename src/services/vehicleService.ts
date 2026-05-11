@@ -57,8 +57,14 @@ export const getVehicleById = async (id: string) => {
 };
 
 export const createVehicle = async (input: CreateVehicleInput, performerId: string) => {
+  const normalizedPlate = input.plateNumber.toUpperCase();
+  const existing = await prisma.vehicle.findUnique({ where: { plateNumber: normalizedPlate } });
+  if (existing) {
+    throw new Error('Vehicle with this plate number already exists');
+  }
+
   const vehicle = await prisma.vehicle.create({
-    data: input,
+    data: { ...input, plateNumber: normalizedPlate },
   });
 
   await logAction(performerId, 'CREATE', 'VEHICLE', vehicle.id, input);
@@ -66,6 +72,20 @@ export const createVehicle = async (input: CreateVehicleInput, performerId: stri
 };
 
 export const updateVehicle = async (id: string, input: UpdateVehicleInput, performerId: string) => {
+  if (input.plateNumber) {
+    const normalizedPlate = input.plateNumber.toUpperCase();
+    const existing = await prisma.vehicle.findFirst({
+      where: {
+        plateNumber: normalizedPlate,
+        id: { not: id }
+      }
+    });
+    if (existing) {
+      throw new Error('Vehicle with this plate number already exists');
+    }
+    input.plateNumber = normalizedPlate;
+  }
+
   const vehicle = await prisma.vehicle.update({
     where: { id },
     data: input,

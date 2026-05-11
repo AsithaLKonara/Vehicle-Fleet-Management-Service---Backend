@@ -24,17 +24,26 @@ const app = express();
 app.use(correlationIdMiddleware);
 app.use(helmet());
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://vehicle-fleet-management-service-fr.vercel.app",
-    config.CORS_ORIGIN
-  ],
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://vehicle-fleet-management-service-fr.vercel.app",
+    ];
+    if (config.CORS_ORIGIN !== '*') {
+      allowedOrigins.push(...config.CORS_ORIGIN.split(','));
+    }
+    
+    if (!origin || allowedOrigins.includes(origin) || config.CORS_ORIGIN === '*') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 };
 
+// CORS middleware handles preflight for all routes automatically
 app.use(cors(corsOptions));
-// Handle OPTIONS preflight for all routes - Express 5 requires named wildcard
-app.options("/{*path}", cors(corsOptions));
 app.use(express.json({ limit: '10kb' })); // Limit request size
 app.use(requestLogger);
 
