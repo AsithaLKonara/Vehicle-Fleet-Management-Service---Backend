@@ -1,10 +1,26 @@
 [build]
   command = "npm run build"
   functions = "netlify/functions"
-  publish = "dist" # though Netlify doesn't really serve files from an Express API, it expects a publish directory
+  publish = "dist"
 
 [functions]
   node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://vehicle-fleet-management-service-fr.vercel.app"
+    Access-Control-Allow-Methods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization, X-Correlation-ID"
+    Access-Control-Allow-Credentials = "true"
+    Access-Control-Max-Age = "86400"
+
+[[redirects]]
+  from = "/api/options-preflight"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
+  conditions = {Method = ["OPTIONS"]}
 
 [[redirects]]
   from = "/*"
