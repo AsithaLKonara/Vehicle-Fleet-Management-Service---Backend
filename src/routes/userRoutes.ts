@@ -7,9 +7,9 @@ import { createUserSchema, updateUserSchema } from '../validators/userValidator'
 
 const router = Router();
 
-// All user routes are admin-only
+// User management - Admin and Manager
 router.use(authMiddleware);
-router.use(authorize(['ADMIN']));
+router.use(authorize(['ADMIN', 'FLEET_MANAGER']));
 
 router.get('/', userController.listUsers);
 router.post('/', validate(createUserSchema), userController.createUser);

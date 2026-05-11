@@ -4,11 +4,12 @@ import { asyncWrapper } from '../utils/asyncWrapper';
 import { VehicleStatus } from '@prisma/client';
 
 export const listVehicles = asyncWrapper(async (req: Request, res: Response) => {
-  const { status, type, search, page, limit } = req.query;
+  const { status, type, search, driverName, page, limit } = req.query;
   const result = await vehicleService.getAllVehicles({
     status: status as VehicleStatus,
     type: type as string,
     search: search as string,
+    driverName: driverName as string,
     page: page ? parseInt(page as string) : undefined,
     limit: limit ? parseInt(limit as string) : undefined,
   });

@@ -3,43 +3,46 @@ import { CreateVehicleInput, UpdateVehicleInput } from '../validators/vehicleVal
 import { VehicleStatus } from '@prisma/client';
 import { logAction } from './auditService';
 
-export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: string; search?: string; page?: number; limit?: number }) => {
-  const { status, type, search, page = 1, limit = 10 } = filters;
+export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: string; search?: string; driverName?: string; page?: number; limit?: number }) => {
+  const { status, type, search, driverName, page = 1, limit = 10 } = filters;
   const skip = (page - 1) * limit;
 
+  const where: any = {
+    AND: [
+      status ? { status } : {},
+      type ? { type: { contains: type, mode: 'insensitive' } } : {},
+      search
+        ? {
+            OR: [
+              { plateNumber: { contains: search, mode: 'insensitive' } },
+              { make: { contains: search, mode: 'insensitive' } },
+              { model: { contains: search, mode: 'insensitive' } },
+            ],
+          }
+        : {},
+      driverName
+        ? {
+            assignments: {
+              some: {
+                returnedAt: null,
+                driver: { name: { contains: driverName, mode: 'insensitive' } },
+              },
+            },
+          }
+        : {},
+    ],
+  };
+
   const [total, vehicles] = await Promise.all([
-    prisma.vehicle.count({
-      where: {
-        AND: [
-          status ? { status } : {},
-          type ? { type: { contains: type, mode: 'insensitive' } } : {},
-          search
-            ? {
-                OR: [
-                  { plateNumber: { contains: search, mode: 'insensitive' } },
-                  { make: { contains: search, mode: 'insensitive' } },
-                  { model: { contains: search, mode: 'insensitive' } },
-                ],
-              }
-            : {},
-        ],
-      },
-    }),
+    prisma.vehicle.count({ where }),
     prisma.vehicle.findMany({
-      where: {
-        AND: [
-          status ? { status } : {},
-          type ? { type: { contains: type, mode: 'insensitive' } } : {},
-          search
-            ? {
-                OR: [
-                  { plateNumber: { contains: search, mode: 'insensitive' } },
-                  { make: { contains: search, mode: 'insensitive' } },
-                  { model: { contains: search, mode: 'insensitive' } },
-                ],
-              }
-            : {},
-        ],
+      where,
+      include: {
+        assignments: {
+          where: { returnedAt: null },
+          include: { driver: { select: { id: true, name: true, email: true } } },
+          take: 1,
+        },
       },
       orderBy: { plateNumber: 'asc' },
       skip,
@@ -53,6 +56,18 @@ export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: s
 export const getVehicleById = async (id: string) => {
   return prisma.vehicle.findUnique({
     where: { id },
+    include: {
+      assignments: {
+        orderBy: { assignedAt: 'desc' },
+        include: { 
+          driver: { select: { id: true, name: true, email: true } },
+          assignedBy: { select: { id: true, name: true } }
+        }
+      },
+      serviceRecords: {
+        orderBy: { serviceDate: 'desc' }
+      }
+    }
   });
 };
 

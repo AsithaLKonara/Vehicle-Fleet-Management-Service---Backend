@@ -37,6 +37,7 @@ export const getVehiclesQuerySchema = z.object({
     status: z.nativeEnum(VehicleStatus).optional(),
     type: z.string().optional(),
     search: z.string().optional(),
+    driverName: z.string().optional(),
     page: z.string().regex(/^\d+$/).optional(),
     limit: z.string().regex(/^\d+$/).optional(),
   }),
