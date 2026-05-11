@@ -9,6 +9,8 @@ describe('User Management Module', () => {
   let managerToken: string;
 
   beforeAll(async () => {
+    await prisma.assignment.deleteMany({});
+    await prisma.auditLog.deleteMany({});
     await prisma.user.deleteMany({ where: { email: { in: ['admin-user@test.com', 'manager-user@test.com', 'new-user@test.com'] } } });
 
     const admin = await prisma.user.create({
@@ -34,6 +36,8 @@ describe('User Management Module', () => {
   });
 
   afterAll(async () => {
+    await prisma.assignment.deleteMany({});
+    await prisma.auditLog.deleteMany({});
     await prisma.user.deleteMany({ where: { email: { in: ['admin-user@test.com', 'manager-user@test.com', 'new-user@test.com'] } } });
     await prisma.$disconnect();
   });

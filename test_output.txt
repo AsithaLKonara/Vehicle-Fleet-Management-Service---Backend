@@ -1,141 +1,475 @@
-  console.log
-    ◇ injected env (4) from .env // tip: ⌘ enable debugging { debug: true }
+
+> backend@1.0.0 test
+> jest -i
+
+FAIL tests/auth.test.ts (8.774 s)
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌁ auth for agents [www.vestauth.com]
 
       at _log (node_modules/dotenv/lib/main.js:131:11)
 
-FAIL tests/assignment.test.ts (6.869 s)
-  ● Assignment Management Module › should assign a vehicle to a driver
+    console.log
+      prisma:query DELETE FROM "public"."User" WHERE "public"."User"."email" = $1
 
-    PrismaClientKnownRequestError: 
-    Invalid `prisma.user.deleteMany()` invocation in
-    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
 
-      20 // Cleanup
-      21 await prisma.assignment.deleteMany({});
-      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    → 23 await prisma.user.deleteMany(
-    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt"
 
-      21 |     await prisma.assignment.deleteMany({});
-      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
-         |     ^
-      24 |
-      25 |     const admin = await prisma.user.create({
-      26 |       data: {
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
 
-      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
-      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
-      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
-      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
-      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
 
-  ● Assignment Management Module › should block assigning an already assigned vehicle
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
 
-    PrismaClientKnownRequestError: 
-    Invalid `prisma.user.deleteMany()` invocation in
-    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
 
-      20 // Cleanup
-      21 await prisma.assignment.deleteMany({});
-      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    → 23 await prisma.user.deleteMany(
-    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
 
-      21 |     await prisma.assignment.deleteMany({});
-      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
-         |     ^
-      24 |
-      25 |     const admin = await prisma.user.create({
-      26 |       data: {
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: POST /auth/login 200 - 199ms
 
-      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
-      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
-      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
-      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
-      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
 
-  ● Assignment Management Module › should return a assigned vehicle
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
 
-    PrismaClientKnownRequestError: 
-    Invalid `prisma.user.deleteMany()` invocation in
-    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
 
-      20 // Cleanup
-      21 await prisma.assignment.deleteMany({});
-      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    → 23 await prisma.user.deleteMany(
-    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: POST /auth/login 401 - 125ms
 
-      21 |     await prisma.assignment.deleteMany({});
-      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
-    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
-         |     ^
-      24 |
-      25 |     const admin = await prisma.user.create({
-      26 |       data: {
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
 
-      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
-      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
-      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
-      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
-      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: POST /auth/login 401 - 5ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: GET /protected-test 401 - 1ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: POST /auth/login 200 - 132ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      2026-05-11 12:49:35 [fleet-backend] [32minfo[39m: GET /protected-test 200 - 9ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:error 
+      Invalid `prisma.user.deleteMany()` invocation in
+      /Users/asithalakmal/Documents/web/Project/backend/tests/auth.test.ts:29:23
+      
+        26 });
+        27 
+        28 afterAll(async () => {
+      → 29   await prisma.user.deleteMany(
+      Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
 
 
   ● Test suite failed to run
 
-    PrismaClientValidationError: 
+    PrismaClientKnownRequestError: 
     Invalid `prisma.user.deleteMany()` invocation in
-    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:62:23
+    /Users/asithalakmal/Documents/web/Project/backend/tests/auth.test.ts:29:23
 
-      59 afterAll(async () => {
-      60   await prisma.assignment.deleteMany({});
-      61   await prisma.vehicle.deleteMany({ where: { id: vehicleId } });
-    → 62   await prisma.user.deleteMany({
-             where: {
-               id: {
-                 in: [
-                   undefined
-                   ~~~~~~~~~
-                 ]
-               }
-             }
-           })
+      26 });
+      27 
+      28 afterAll(async () => {
+    → 29   await prisma.user.deleteMany(
+    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
 
-    Invalid value for argument `in[0]`: Can not use `undefined` value within array. Use `null` or filter out `undefined` values.
+      27 |
+      28 |   afterAll(async () => {
+    > 29 |     await prisma.user.deleteMany({ where: { email: testUser.email } });
+         |     ^
+      30 |     await prisma.$disconnect();
+      31 |   });
+      32 |
 
-      at ar (node_modules/@prisma/client/src/runtime/core/errorRendering/throwValidationException.ts:46:9)
-      at e.throwValidationException [as throwValidationError] (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:458:5)
-      at Rc (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:395:15)
-      at serializeArgumentsArray (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:310:12)
-      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
-      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:340:12)
-      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
-      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:340:12)
-      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
-      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:127:16)
-      at serializeFieldSelection (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:116:12)
-      at serializeJsonQuery (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1018:11)
-      at Object.callback [as runInChildSpan] (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:28:12)
-      at fi.runInChildSpan (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:53:36)
-      at t._executeRequest (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1017:45)
-      at es (node_modules/@prisma/client/src/runtime/core/extensions/applyQueryExtensions.ts:58:19)
-      at applyQueryExtensions (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:30)
-      at consumer (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:989:49)
-      at node_modules/@prisma/client/src/runtime/getPrismaClient.ts:989:27
-      at Object.callback [as runInChildSpan] (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:28:12)
-      at fi.runInChildSpan (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:53:36)
-      at t._request (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:985:34)
-      at e._createPrismaPromise.action (node_modules/@prisma/client/src/runtime/core/model/applyModel.ts:103:27)
-      at callback (node_modules/@prisma/client/src/runtime/core/request/createPrismaPromise.ts:34:46)
-      at PrismaPromise._callback [as then] (node_modules/@prisma/client/src/runtime/core/request/createPrismaPromise.ts:52:16)
+      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
+      at Object.<anonymous> (tests/auth.test.ts:29:5)
 
-Test Suites: 1 failed, 1 total
-Tests:       3 failed, 3 total
+PASS tests/user.test.ts
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."Assignment" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."AuditLog" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."User" WHERE "public"."User"."email" IN ($1,$2,$3)
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."role"::text FROM "public"."User" WHERE 1=1 OFFSET $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:37 [fleet-backend] [32minfo[39m: GET /users 200 - 16ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      2026-05-11 12:49:37 [fleet-backend] [32minfo[39m: GET /users 403 - 4ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."role"::text
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:37 [fleet-backend] [32minfo[39m: POST /users 201 - 170ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query DELETE FROM "public"."Assignment" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."AuditLog" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."User" WHERE "public"."User"."email" IN ($1,$2,$3)
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+PASS tests/vehicle.test.ts
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌘ suppress logs { quiet: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."AuditLog" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."Vehicle" WHERE "public"."Vehicle"."plateNumber" = $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."User" WHERE "public"."User"."email" = $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."User" ("id","name","email","password","role","createdAt","updatedAt") VALUES ($1,$2,$3,$4,CAST($5::text AS "public"."Role"),$6,$7) RETURNING "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."Vehicle" ("id","plateNumber","make","model","year","purchaseCost","status","type","createdAt","updatedAt") VALUES ($1,$2,$3,$4,$5,$6,CAST($7::text AS "public"."VehicleStatus"),$8,$9,$10) RETURNING "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:38 [fleet-backend] [32minfo[39m: POST /vehicles 201 - 83ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      2026-05-11 12:49:38 [fleet-backend] [32minfo[39m: POST /vehicles 403 - 3ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query SELECT COUNT(*) AS "_count$_all" FROM (SELECT "public"."Vehicle"."id" FROM "public"."Vehicle" WHERE 1=1 OFFSET $1) AS "sub"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 0)
+
+    console.log
+      prisma:query SELECT "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt" FROM "public"."Vehicle" WHERE 1=1 ORDER BY "public"."Vehicle"."plateNumber" ASC LIMIT $1 OFFSET $2
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 1)
+
+    console.log
+      2026-05-11 12:49:38 [fleet-backend] [32minfo[39m: GET /vehicles 200 - 45ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query SELECT COUNT(*) AS "_count$_all" FROM (SELECT "public"."Vehicle"."id" FROM "public"."Vehicle" WHERE "public"."Vehicle"."status" = CAST($1::text AS "public"."VehicleStatus") OFFSET $2) AS "sub"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 0)
+
+    console.log
+      prisma:query SELECT "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt" FROM "public"."Vehicle" WHERE "public"."Vehicle"."status" = CAST($1::text AS "public"."VehicleStatus") ORDER BY "public"."Vehicle"."plateNumber" ASC LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 1)
+
+    console.log
+      2026-05-11 12:49:38 [fleet-backend] [32minfo[39m: GET /vehicles?status=AVAILABLE 200 - 48ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query UPDATE "public"."Vehicle" SET "status" = CAST($1::text AS "public"."VehicleStatus"), "updatedAt" = $2 WHERE ("public"."Vehicle"."id" = $3 AND 1=1) RETURNING "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:38 [fleet-backend] [32minfo[39m: PATCH /vehicles/a79d9658-7ef7-48cc-8c32-d47cb0007840 200 - 26ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query DELETE FROM "public"."AuditLog" WHERE 1=1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."Vehicle" WHERE "public"."Vehicle"."plateNumber" = $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query DELETE FROM "public"."User" WHERE "public"."User"."email" = $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+PASS tests/assignment.test.ts
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+    console.log
+      prisma:query SELECT "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt" FROM "public"."Vehicle" WHERE ("public"."Vehicle"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."Assignment" ("id","vehicleId","driverId","assignedById","assignedAt","createdAt") VALUES ($1,$2,$3,$4,$5,$6) RETURNING "public"."Assignment"."id", "public"."Assignment"."vehicleId", "public"."Assignment"."driverId", "public"."Assignment"."assignedById", "public"."Assignment"."assignedAt", "public"."Assignment"."returnedAt", "public"."Assignment"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query UPDATE "public"."Vehicle" SET "status" = CAST($1::text AS "public"."VehicleStatus"), "updatedAt" = $2 WHERE ("public"."Vehicle"."id" = $3 AND 1=1) RETURNING "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query COMMIT
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:39 [fleet-backend] [32minfo[39m: POST /assignments 201 - 82ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query SELECT "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt" FROM "public"."Vehicle" WHERE ("public"."Vehicle"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query ROLLBACK
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:39 [fleet-backend] [32minfo[39m: POST /assignments 400 - 12ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      prisma:query SELECT "public"."Assignment"."id", "public"."Assignment"."vehicleId", "public"."Assignment"."driverId", "public"."Assignment"."assignedById", "public"."Assignment"."assignedAt", "public"."Assignment"."returnedAt", "public"."Assignment"."createdAt" FROM "public"."Assignment" WHERE ("public"."Assignment"."id" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query UPDATE "public"."Assignment" SET "returnedAt" = $1 WHERE ("public"."Assignment"."id" = $2 AND 1=1) RETURNING "public"."Assignment"."id", "public"."Assignment"."vehicleId", "public"."Assignment"."driverId", "public"."Assignment"."assignedById", "public"."Assignment"."assignedAt", "public"."Assignment"."returnedAt", "public"."Assignment"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query UPDATE "public"."Vehicle" SET "status" = CAST($1::text AS "public"."VehicleStatus"), "updatedAt" = $2 WHERE ("public"."Vehicle"."id" = $3 AND 1=1) RETURNING "public"."Vehicle"."id", "public"."Vehicle"."plateNumber", "public"."Vehicle"."make", "public"."Vehicle"."model", "public"."Vehicle"."year", "public"."Vehicle"."purchaseCost", "public"."Vehicle"."status"::text, "public"."Vehicle"."type", "public"."Vehicle"."mileage", "public"."Vehicle"."notes", "public"."Vehicle"."createdAt", "public"."Vehicle"."updatedAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query INSERT INTO "public"."AuditLog" ("id","action","entity","entityId","userId","metadata","createdAt") VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING "public"."AuditLog"."id", "public"."AuditLog"."action", "public"."AuditLog"."entity", "public"."AuditLog"."entityId", "public"."AuditLog"."userId", "public"."AuditLog"."metadata", "public"."AuditLog"."createdAt"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query COMMIT
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      2026-05-11 12:49:39 [fleet-backend] [32minfo[39m: PATCH /assignments/7fb7bd94-c30a-4d54-bbcc-d8dcf911d2d3/return 200 - 31ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+PASS tests/dashboard.test.ts
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌘ override existing { override: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+    console.log
+      prisma:query SELECT "public"."User"."id", "public"."User"."name", "public"."User"."email", "public"."User"."password", "public"."User"."role"::text, "public"."User"."createdAt", "public"."User"."updatedAt" FROM "public"."User" WHERE ("public"."User"."email" = $1 AND 1=1) LIMIT $2 OFFSET $3
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+
+    console.log
+      prisma:query SELECT COUNT(*) AS "_count$_all" FROM (SELECT "public"."User"."id" FROM "public"."User" WHERE 1=1 OFFSET $1) AS "sub"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 0)
+
+    console.log
+      prisma:query SELECT COUNT(*) AS "_count$_all" FROM (SELECT "public"."Vehicle"."id" FROM "public"."Vehicle" WHERE 1=1 OFFSET $1) AS "sub"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 1)
+
+    console.log
+      prisma:query SELECT COUNT("public"."Vehicle"."status") AS "_count$status", "public"."Vehicle"."status"::text FROM "public"."Vehicle" WHERE 1=1 GROUP BY "public"."Vehicle"."status" OFFSET $1
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 3)
+
+    console.log
+      prisma:query SELECT COUNT(*) AS "_count$_all" FROM (SELECT "public"."Assignment"."id" FROM "public"."Assignment" WHERE "public"."Assignment"."returnedAt" IS NULL OFFSET $1) AS "sub"
+
+      at Object.Ou (node_modules/@prisma/internals/src/logger.ts:13:11)
+          at async Promise.all (index 2)
+
+    console.log
+      2026-05-11 12:49:40 [fleet-backend] [32minfo[39m: GET /dashboard/stats 200 - 44ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+PASS tests/health.test.ts
+  ● Console
+
+    console.log
+      ◇ injected env (4) from .env // tip: ⌘ enable debugging { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+    console.log
+      2026-05-11 12:49:41 [fleet-backend] [32minfo[39m: GET /health 200 - 2ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+    console.log
+      2026-05-11 12:49:41 [fleet-backend] [32minfo[39m: GET /unknown 404 - 1ms
+
+      at Console.log (node_modules/winston/lib/winston/transports/console.js:87:23)
+
+
+Test Suites: 1 failed, 5 passed, 6 total
+Tests:       19 passed, 19 total
 Snapshots:   0 total
-Time:        7.067 s, estimated 12 s
-Ran all test suites matching tests/assignment.test.ts.
+Time:        14.575 s, estimated 16 s
+Ran all test suites.
 Jest did not exit one second after the test run has completed.
 
 'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.

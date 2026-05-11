@@ -10,6 +10,7 @@ describe('Vehicle Management Module', () => {
   let vehicleId: string;
 
   beforeAll(async () => {
+    await prisma.auditLog.deleteMany({});
     await prisma.vehicle.deleteMany({ where: { plateNumber: 'TEST-999' } });
     await prisma.user.deleteMany({ where: { email: 'staff-user@test.com' } });
 
@@ -38,6 +39,7 @@ describe('Vehicle Management Module', () => {
   });
 
   afterAll(async () => {
+    await prisma.auditLog.deleteMany({});
     await prisma.vehicle.deleteMany({ where: { plateNumber: 'TEST-999' } });
     await prisma.user.deleteMany({ where: { email: 'staff-user@test.com' } });
     await prisma.$disconnect();

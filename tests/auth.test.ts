@@ -13,6 +13,7 @@ describe('Authentication Module', () => {
 
   beforeAll(async () => {
     // Cleanup and create test user
+    await prisma.auditLog.deleteMany({});
     await prisma.user.deleteMany({ where: { email: testUser.email } });
     const hashedPassword = await bcrypt.hash(testUser.password, 10);
     await prisma.user.create({
@@ -26,6 +27,7 @@ describe('Authentication Module', () => {
   });
 
   afterAll(async () => {
+    await prisma.auditLog.deleteMany({});
     await prisma.user.deleteMany({ where: { email: testUser.email } });
     await prisma.$disconnect();
   });
