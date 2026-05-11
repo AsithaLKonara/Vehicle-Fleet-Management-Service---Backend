@@ -1,4 +1,8 @@
 import { Parser } from 'json2csv';
-const parser = new Parser();
-const csv = parser.parse([{ a: 1, b: 2 }]);
-console.log(csv);
+
+try {
+  const p = new Parser();
+  console.log('Parser created successfully');
+} catch (e) {
+  console.error('Failed to create Parser:', e);
+}

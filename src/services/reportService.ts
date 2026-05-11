@@ -3,7 +3,8 @@ import { Parser } from 'json2csv';
 
 export const exportVehiclesCsv = async () => {
   const vehicles = await prisma.vehicle.findMany();
-  const parser = new Parser();
+  const fields = ['id', 'plateNumber', 'make', 'model', 'year', 'purchaseCost', 'status', 'type', 'mileage', 'createdAt'];
+  const parser = new Parser({ fields });
   return parser.parse(vehicles);
 };
 
@@ -26,7 +27,8 @@ export const exportAssignmentsCsv = async () => {
     ReturnedAt: a.returnedAt || 'N/A',
   }));
 
-  const parser = new Parser();
+  const fields = ['ID', 'Vehicle', 'Driver', 'DriverEmail', 'AssignedBy', 'AssignedAt', 'ReturnedAt'];
+  const parser = new Parser({ fields });
   return parser.parse(flatData);
 };
 
@@ -48,6 +50,7 @@ export const exportAuditLogsCsv = async () => {
     Metadata: JSON.stringify(l.metadata),
   }));
 
-  const parser = new Parser();
+  const fields = ['ID', 'Action', 'Entity', 'EntityID', 'User', 'Timestamp', 'Metadata'];
+  const parser = new Parser({ fields });
   return parser.parse(flatData);
 };
