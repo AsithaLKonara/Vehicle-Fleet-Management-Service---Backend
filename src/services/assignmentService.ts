@@ -7,6 +7,7 @@ export const getAllAssignments = async () => {
     include: {
       vehicle: true,
       driver: true,
+      assignedBy: true,
     },
     orderBy: { assignedAt: 'desc' },
   });
