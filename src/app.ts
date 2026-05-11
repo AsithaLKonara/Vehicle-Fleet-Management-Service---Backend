@@ -10,6 +10,7 @@ import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import vehicleRoutes from './routes/vehicleRoutes';
 import assignmentRoutes from './routes/assignmentRoutes';
+import dashboardRoutes from './routes/dashboardRoutes';
 
 const app = express();
 
@@ -39,6 +40,9 @@ app.use('/vehicles', vehicleRoutes);
 
 // Assignment Routes
 app.use('/assignments', assignmentRoutes);
+
+// Dashboard Routes
+app.use('/dashboard', dashboardRoutes);
 
 // Protected Test Route
 app.get('/protected-test', authMiddleware, authorize(['ADMIN']), (req, res) => {
