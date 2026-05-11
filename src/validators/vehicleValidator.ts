@@ -11,6 +11,7 @@ export const createVehicleSchema = z.object({
     status: z.nativeEnum(VehicleStatus).default(VehicleStatus.AVAILABLE),
     type: z.string().optional(),
     mileage: z.number().int().nonnegative().optional(),
+    imageUrl: z.string().url().optional(),
   }),
 });
 
@@ -27,6 +28,7 @@ export const updateVehicleSchema = z.object({
     status: z.nativeEnum(VehicleStatus).optional(),
     type: z.string().optional(),
     mileage: z.number().int().optional(),
+    imageUrl: z.string().url().optional(),
   }),
 });
 
