@@ -38,6 +38,9 @@ model Assignment {
 
   vehicle Vehicle @relation(fields: [vehicleId], references: [id])
   driver  User    @relation(fields: [driverId], references: [id])
+
+  @@index([vehicleId])
+  @@index([driverId])
 }
 
 model AuditLog {
@@ -49,6 +52,9 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 enum Role {

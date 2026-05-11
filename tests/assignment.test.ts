@@ -1,18 +1,26 @@
+import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import pg from 'pg';
 import request from 'supertest';
 import app from '../src/app';
-import { prisma } from '../src/lib/prisma';
 import jwt from 'jsonwebtoken';
 import { config } from '../src/config';
+
+const pool = new pg.Pool({ connectionString: config.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 describe('Assignment Management Module', () => {
   let adminToken: string;
   let vehicleId: string;
   let driverId: string;
+  let adminId: string;
   let assignmentId: string;
 
   beforeAll(async () => {
-    // Cleanup
+    // 1. Cleanup in correct order
     await prisma.assignment.deleteMany({});
+    await prisma.auditLog.deleteMany({});
     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
 
@@ -48,13 +56,19 @@ describe('Assignment Management Module', () => {
     adminToken = jwt.sign({ id: admin.id, email: admin.email, role: admin.role }, config.JWT_SECRET);
     vehicleId = vehicle.id;
     driverId = driver.id;
+    adminId = admin.id;
   });
 
   afterAll(async () => {
     await prisma.assignment.deleteMany({});
-    await prisma.vehicle.deleteMany({ where: { id: vehicleId } });
-    await prisma.user.deleteMany({ where: { id: { in: [driverId] } } });
+    await prisma.auditLog.deleteMany({});
+    if (vehicleId) await prisma.vehicle.deleteMany({ where: { id: vehicleId } });
+    const userIds = [driverId, adminId].filter(Boolean) as string[];
+    if (userIds.length > 0) {
+      await prisma.user.deleteMany({ where: { id: { in: userIds } } });
+    }
     await prisma.$disconnect();
+    await pool.end();
   });
 
   it('should assign a vehicle to a driver', async () => {

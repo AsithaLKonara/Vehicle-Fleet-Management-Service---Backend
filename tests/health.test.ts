@@ -5,7 +5,7 @@ describe('Backend Foundation - Health Check', () => {
   it('should return 200 OK for /health', async () => {
     const res = await request(app).get('/health');
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toHaveProperty('status', 'OK');
+    expect(res.body).toEqual({ success: true });
   });
 
   it('should return 404 for unknown routes', async () => {

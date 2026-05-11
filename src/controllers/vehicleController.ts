@@ -4,13 +4,15 @@ import { asyncWrapper } from '../utils/asyncWrapper';
 import { VehicleStatus } from '@prisma/client';
 
 export const listVehicles = asyncWrapper(async (req: Request, res: Response) => {
-  const { status, type, search } = req.query;
-  const vehicles = await vehicleService.getAllVehicles({
+  const { status, type, search, page, limit } = req.query;
+  const result = await vehicleService.getAllVehicles({
     status: status as VehicleStatus,
     type: type as string,
     search: search as string,
+    page: page ? parseInt(page as string) : undefined,
+    limit: limit ? parseInt(limit as string) : undefined,
   });
-  res.status(200).json({ success: true, data: vehicles });
+  res.status(200).json({ success: true, data: result.vehicles, meta: { total: result.total, page: result.page, limit: result.limit } });
 });
 
 export const getVehicle = asyncWrapper(async (req: Request, res: Response) => {

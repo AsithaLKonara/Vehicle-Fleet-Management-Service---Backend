@@ -6,6 +6,9 @@ import { requestLogger } from './middleware/requestLogger';
 import { errorMiddleware } from './middleware/errorMiddleware';
 import { authMiddleware } from './middleware/authMiddleware';
 import { authorize } from './middleware/roleMiddleware';
+import { apiRateLimiter, authRateLimiter } from './middleware/rateLimiter';
+import { correlationIdMiddleware } from './middleware/correlationMiddleware';
+
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
 import vehicleRoutes from './routes/vehicleRoutes';
@@ -14,34 +17,30 @@ import dashboardRoutes from './routes/dashboardRoutes';
 
 const app = express();
 
-// Security Middleware
+// Security & Infrastructure Middleware
+app.use(correlationIdMiddleware);
 app.use(helmet());
 app.use(cors({ origin: config.CORS_ORIGIN }));
-
-// Request Parsing
-app.use(express.json());
-
-// Logging
+app.use(express.json({ limit: '10kb' })); // Limit request size
 app.use(requestLogger);
+
+// Global Rate Limiting
+app.use('/api/', apiRateLimiter);
 
 // Health Route
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.status(200).json({ 
+    success: true 
+  });
 });
 
-// Auth Routes
-app.use('/auth', authRoutes);
+// Auth Routes (with specific rate limiting)
+app.use('/auth', authRateLimiter, authRoutes);
 
-// User Routes
+// Business Routes
 app.use('/users', userRoutes);
-
-// Vehicle Routes
 app.use('/vehicles', vehicleRoutes);
-
-// Assignment Routes
 app.use('/assignments', assignmentRoutes);
-
-// Dashboard Routes
 app.use('/dashboard', dashboardRoutes);
 
 // Protected Test Route

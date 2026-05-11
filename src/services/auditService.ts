@@ -1,8 +1,17 @@
 import { prisma } from '../lib/prisma';
+import { Prisma } from '@prisma/client';
 
-export const logAction = async (userId: string, action: string, resource: string, details?: any) => {
+export type AuditClient = Prisma.TransactionClient | typeof prisma;
+
+export const logAction = async (
+  userId: string, 
+  action: string, 
+  resource: string, 
+  details?: Prisma.InputJsonValue,
+  client: AuditClient = prisma
+) => {
   try {
-    await prisma.auditLog.create({
+    await client.auditLog.create({
       data: {
         userId,
         action,

@@ -1,0 +1,141 @@
+  console.log
+    ◇ injected env (4) from .env // tip: ⌘ enable debugging { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:131:11)
+
+FAIL tests/assignment.test.ts (6.869 s)
+  ● Assignment Management Module › should assign a vehicle to a driver
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.deleteMany()` invocation in
+    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+
+      20 // Cleanup
+      21 await prisma.assignment.deleteMany({});
+      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    → 23 await prisma.user.deleteMany(
+    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+
+      21 |     await prisma.assignment.deleteMany({});
+      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
+         |     ^
+      24 |
+      25 |     const admin = await prisma.user.create({
+      26 |       data: {
+
+      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
+      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+
+  ● Assignment Management Module › should block assigning an already assigned vehicle
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.deleteMany()` invocation in
+    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+
+      20 // Cleanup
+      21 await prisma.assignment.deleteMany({});
+      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    → 23 await prisma.user.deleteMany(
+    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+
+      21 |     await prisma.assignment.deleteMany({});
+      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
+         |     ^
+      24 |
+      25 |     const admin = await prisma.user.create({
+      26 |       data: {
+
+      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
+      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+
+  ● Assignment Management Module › should return a assigned vehicle
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.deleteMany()` invocation in
+    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:23:23
+
+      20 // Cleanup
+      21 await prisma.assignment.deleteMany({});
+      22 await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    → 23 await prisma.user.deleteMany(
+    Foreign key constraint violated on the constraint: `AuditLog_userId_fkey`
+
+      21 |     await prisma.assignment.deleteMany({});
+      22 |     await prisma.vehicle.deleteMany({ where: { plateNumber: 'ASGN-001' } });
+    > 23 |     await prisma.user.deleteMany({ where: { email: { in: ['admin@test.com', 'driver@test.com'] } } });
+         |     ^
+      24 |
+      25 |     const admin = await prisma.user.create({
+      26 |       data: {
+
+      at zr.handleRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+      at zr.handleAndLogRequestError (node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+      at zr.request (node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+      at a (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:24)
+      at Object.<anonymous> (tests/assignment.test.ts:23:5)
+
+
+  ● Test suite failed to run
+
+    PrismaClientValidationError: 
+    Invalid `prisma.user.deleteMany()` invocation in
+    /Users/asithalakmal/Documents/web/Project/backend/tests/assignment.test.ts:62:23
+
+      59 afterAll(async () => {
+      60   await prisma.assignment.deleteMany({});
+      61   await prisma.vehicle.deleteMany({ where: { id: vehicleId } });
+    → 62   await prisma.user.deleteMany({
+             where: {
+               id: {
+                 in: [
+                   undefined
+                   ~~~~~~~~~
+                 ]
+               }
+             }
+           })
+
+    Invalid value for argument `in[0]`: Can not use `undefined` value within array. Use `null` or filter out `undefined` values.
+
+      at ar (node_modules/@prisma/client/src/runtime/core/errorRendering/throwValidationException.ts:46:9)
+      at e.throwValidationException [as throwValidationError] (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:458:5)
+      at Rc (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:395:15)
+      at serializeArgumentsArray (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:310:12)
+      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
+      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:340:12)
+      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
+      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:340:12)
+      at serializeArgumentsValue (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:374:21)
+      at serializeArgumentsObject (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:127:16)
+      at serializeFieldSelection (node_modules/@prisma/client/src/runtime/core/jsonProtocol/serializeJsonQuery.ts:116:12)
+      at serializeJsonQuery (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1018:11)
+      at Object.callback [as runInChildSpan] (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:28:12)
+      at fi.runInChildSpan (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:53:36)
+      at t._executeRequest (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:1017:45)
+      at es (node_modules/@prisma/client/src/runtime/core/extensions/applyQueryExtensions.ts:58:19)
+      at applyQueryExtensions (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:963:30)
+      at consumer (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:989:49)
+      at node_modules/@prisma/client/src/runtime/getPrismaClient.ts:989:27
+      at Object.callback [as runInChildSpan] (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:28:12)
+      at fi.runInChildSpan (node_modules/@prisma/client/src/runtime/core/tracing/TracingHelper.ts:53:36)
+      at t._request (node_modules/@prisma/client/src/runtime/getPrismaClient.ts:985:34)
+      at e._createPrismaPromise.action (node_modules/@prisma/client/src/runtime/core/model/applyModel.ts:103:27)
+      at callback (node_modules/@prisma/client/src/runtime/core/request/createPrismaPromise.ts:34:46)
+      at PrismaPromise._callback [as then] (node_modules/@prisma/client/src/runtime/core/request/createPrismaPromise.ts:52:16)
+
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 3 total
+Snapshots:   0 total
+Time:        7.067 s, estimated 12 s
+Ran all test suites matching tests/assignment.test.ts.
+Jest did not exit one second after the test run has completed.
+
+'This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.

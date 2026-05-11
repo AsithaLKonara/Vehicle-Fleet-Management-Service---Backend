@@ -2,27 +2,51 @@ import { prisma } from '../lib/prisma';
 import { CreateVehicleInput, UpdateVehicleInput } from '../validators/vehicleValidator';
 import { VehicleStatus } from '@prisma/client';
 
-export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: string; search?: string }) => {
-  const { status, type, search } = filters;
+export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: string; search?: string; page?: number; limit?: number }) => {
+  const { status, type, search, page = 1, limit = 10 } = filters;
+  const skip = (page - 1) * limit;
 
-  return prisma.vehicle.findMany({
-    where: {
-      AND: [
-        status ? { status } : {},
-        type ? { type: { contains: type, mode: 'insensitive' } } : {},
-        search
-          ? {
-              OR: [
-                { plateNumber: { contains: search, mode: 'insensitive' } },
-                { make: { contains: search, mode: 'insensitive' } },
-                { model: { contains: search, mode: 'insensitive' } },
-              ],
-            }
-          : {},
-      ],
-    },
-    orderBy: { plateNumber: 'asc' },
-  });
+  const [total, vehicles] = await Promise.all([
+    prisma.vehicle.count({
+      where: {
+        AND: [
+          status ? { status } : {},
+          type ? { type: { contains: type, mode: 'insensitive' } } : {},
+          search
+            ? {
+                OR: [
+                  { plateNumber: { contains: search, mode: 'insensitive' } },
+                  { make: { contains: search, mode: 'insensitive' } },
+                  { model: { contains: search, mode: 'insensitive' } },
+                ],
+              }
+            : {},
+        ],
+      },
+    }),
+    prisma.vehicle.findMany({
+      where: {
+        AND: [
+          status ? { status } : {},
+          type ? { type: { contains: type, mode: 'insensitive' } } : {},
+          search
+            ? {
+                OR: [
+                  { plateNumber: { contains: search, mode: 'insensitive' } },
+                  { make: { contains: search, mode: 'insensitive' } },
+                  { model: { contains: search, mode: 'insensitive' } },
+                ],
+              }
+            : {},
+        ],
+      },
+      orderBy: { plateNumber: 'asc' },
+      skip,
+      take: limit,
+    }),
+  ]);
+
+  return { total, page, limit, vehicles };
 };
 
 export const getVehicleById = async (id: string) => {

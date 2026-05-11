@@ -35,7 +35,7 @@ export const createAssignment = async (input: CreateAssignmentInput, userId: str
     });
 
     // 4. Log Action
-    await logAction(userId, 'CREATE', 'ASSIGNMENT', { assignmentId: assignment.id, vehicleId: input.vehicleId });
+    await logAction(userId, 'CREATE', 'ASSIGNMENT', { assignmentId: assignment.id, vehicleId: input.vehicleId }, tx);
 
     return assignment;
   });
@@ -65,7 +65,7 @@ export const returnVehicle = async (id: string, userId: string) => {
     });
 
     // 4. Log Action
-    await logAction(userId, 'RETURN', 'ASSIGNMENT', { assignmentId: id, vehicleId: assignment.vehicleId });
+    await logAction(userId, 'RETURN', 'ASSIGNMENT', { assignmentId: id, vehicleId: assignment.vehicleId }, tx);
 
     return updatedAssignment;
   });
