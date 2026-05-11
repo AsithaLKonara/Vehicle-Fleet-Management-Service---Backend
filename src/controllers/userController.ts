@@ -16,3 +16,8 @@ export const updateUser = asyncWrapper(async (req: Request, res: Response) => {
   const user = await userService.updateUser(req.params.id as string, req.body, req.user!.id);
   res.status(200).json({ success: true, data: user });
 });
+
+export const deleteUser = asyncWrapper(async (req: Request, res: Response) => {
+  await userService.deleteUser(req.params.id as string, req.user!.id);
+  res.status(204).send();
+});

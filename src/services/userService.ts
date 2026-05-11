@@ -48,3 +48,21 @@ export const updateUser = async (id: string, input: UpdateUserInput, performerId
   await logAction(performerId, 'UPDATE', 'USER', user.id, input);
   return user;
 };
+
+export const deleteUser = async (id: string, performerId: string) => {
+  // Prevent self-deletion
+  if (id === performerId) {
+    throw new Error('Self-deletion is prohibited for system security.');
+  }
+
+  const user = await prisma.user.delete({
+    where: { id },
+    select: {
+      id: true,
+      email: true,
+    },
+  });
+
+  await logAction(performerId, 'DELETE', 'USER', id, { email: user.email });
+  return user;
+};

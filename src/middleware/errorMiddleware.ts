@@ -19,6 +19,15 @@ export const errorMiddleware = (
     userId: req.user?.id,
   });
 
+  // Handle Prisma unique constraint violations
+  if (err.message.includes('Unique constraint failed')) {
+    return res.status(409).json({
+      success: false,
+      message: 'Asset conflict. This identifier is already registered in the registry.',
+      errors: err.errors || [],
+    });
+  }
+
   res.status(statusCode).json({
     success: false,
     message,

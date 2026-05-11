@@ -14,5 +14,6 @@ router.use(authorize(['ADMIN']));
 router.get('/', userController.listUsers);
 router.post('/', validate(createUserSchema), userController.createUser);
 router.patch('/:id', validate(updateUserSchema), userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
 export default router;
