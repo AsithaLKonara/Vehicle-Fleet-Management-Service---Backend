@@ -30,6 +30,37 @@ async function main() {
     console.log('ℹ️ Admin user already exists');
   }
 
+  // Sample Staff/Managers
+  const managerEmail = 'manager@fleet.com';
+  const existingManager = await prisma.user.findUnique({ where: { email: managerEmail } });
+  if (!existingManager) {
+    const hashedPassword = await bcrypt.hash('manager123', 10);
+    await prisma.user.create({
+      data: {
+        email: managerEmail,
+        name: 'Fleet Manager',
+        password: hashedPassword,
+        role: Role.FLEET_MANAGER,
+      },
+    });
+    console.log('✅ Manager user created');
+  }
+
+  const staffEmail = 'staff@fleet.com';
+  const existingStaff = await prisma.user.findUnique({ where: { email: staffEmail } });
+  if (!existingStaff) {
+    const hashedPassword = await bcrypt.hash('staff123', 10);
+    await prisma.user.create({
+      data: {
+        email: staffEmail,
+        name: 'Fleet Staff',
+        password: hashedPassword,
+        role: Role.FLEET_STAFF,
+      },
+    });
+    console.log('✅ Staff user created');
+  }
+
   const vehicleCount = await prisma.vehicle.count();
   if (vehicleCount === 0) {
     await prisma.vehicle.createMany({
@@ -42,6 +73,7 @@ async function main() {
           purchaseCost: 45000,
           status: 'AVAILABLE',
           type: 'Van',
+          notes: 'Regular service done',
         },
         {
           plateNumber: 'XYZ-5678',
@@ -51,6 +83,7 @@ async function main() {
           purchaseCost: 48000,
           status: 'AVAILABLE',
           type: 'Van',
+          notes: 'New arrival',
         },
       ],
     });

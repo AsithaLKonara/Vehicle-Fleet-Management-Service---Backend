@@ -12,8 +12,11 @@ model User {
   email       String       @unique
   password    String
   role        Role
-  assignments Assignment[]
+  assignments Assignment[] @relation("DriverAssignments")
+  managedAssignments Assignment[] @relation("AssignedBy")
   auditLogs   AuditLog[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
 }
 
 model Vehicle {
@@ -26,29 +29,37 @@ model Vehicle {
   status       VehicleStatus
   type         String?
   mileage      Int?
+  notes        String?
   assignments  Assignment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now()) @updatedAt
 }
 
 model Assignment {
-  id         String    @id @default(uuid())
-  vehicleId  String
-  driverId   String
-  assignedAt DateTime  @default(now())
-  returnedAt DateTime?
+  id           String    @id @default(uuid())
+  vehicleId    String
+  driverId     String
+  assignedById String
+  assignedAt   DateTime  @default(now())
+  returnedAt   DateTime?
+  createdAt    DateTime  @default(now())
 
-  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
-  driver  User    @relation(fields: [driverId], references: [id])
+  vehicle    Vehicle @relation(fields: [vehicleId], references: [id])
+  driver     User    @relation("DriverAssignments", fields: [driverId], references: [id])
+  assignedBy User    @relation("AssignedBy", fields: [assignedById], references: [id])
 
   @@index([vehicleId])
   @@index([driverId])
+  @@index([assignedById])
 }
 
 model AuditLog {
   id        String   @id @default(uuid())
-  userId    String
   action    String
-  resource  String
-  details   Json?
+  entity    String
+  entityId  String
+  userId    String
+  metadata  Json?
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
@@ -67,4 +78,5 @@ enum VehicleStatus {
   AVAILABLE
   ASSIGNED
   MAINTENANCE
+  INACTIVE
 }
