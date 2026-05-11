@@ -13,7 +13,17 @@ describe('Vehicle Management Module', () => {
     await prisma.vehicle.deleteMany({ where: { plateNumber: 'TEST-999' } });
     await prisma.user.deleteMany({ where: { email: 'staff-user@test.com' } });
 
-    const admin = await prisma.user.findUnique({ where: { email: 'admin-user@test.com' } });
+    let admin = await prisma.user.findUnique({ where: { email: 'admin-user@test.com' } });
+    if (!admin) {
+      admin = await prisma.user.create({
+        data: {
+          email: 'admin-user@test.com',
+          password: 'password123',
+          name: 'Admin User',
+          role: 'ADMIN',
+        },
+      });
+    }
     const staff = await prisma.user.create({
       data: {
         email: 'staff-user@test.com',
