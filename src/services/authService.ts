@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { prisma } from '../lib/prisma';
 import { config } from '../config';
 import { LoginInput } from '../validators/authValidator';
+import { logAction } from './auditService';
 
 export const login = async (input: LoginInput) => {
   const user = await prisma.user.findUnique({
@@ -23,6 +24,8 @@ export const login = async (input: LoginInput) => {
     config.JWT_SECRET,
     { expiresIn: '1d' }
   );
+
+  await logAction(user.id, 'LOGIN', 'USER', user.id);
 
   return {
     user: {

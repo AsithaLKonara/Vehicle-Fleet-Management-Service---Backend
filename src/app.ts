@@ -14,6 +14,7 @@ import userRoutes from './routes/userRoutes';
 import vehicleRoutes from './routes/vehicleRoutes';
 import assignmentRoutes from './routes/assignmentRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
+import auditRoutes from './routes/auditRoutes';
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use('/users', userRoutes);
 app.use('/vehicles', vehicleRoutes);
 app.use('/assignments', assignmentRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/audit', auditRoutes);
 
 // Protected Test Route
 app.get('/protected-test', authMiddleware, authorize(['ADMIN']), (req, res) => {

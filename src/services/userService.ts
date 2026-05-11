@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import bcrypt from 'bcrypt';
 import { CreateUserInput, UpdateUserInput } from '../validators/userValidator';
+import { logAction } from './auditService';
 
 export const getAllUsers = async () => {
   return prisma.user.findMany({
@@ -13,9 +14,9 @@ export const getAllUsers = async () => {
   });
 };
 
-export const createUser = async (input: CreateUserInput) => {
+export const createUser = async (input: CreateUserInput, performerId: string) => {
   const hashedPassword = await bcrypt.hash(input.password, 10);
-  return prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       ...input,
       password: hashedPassword,
@@ -27,10 +28,13 @@ export const createUser = async (input: CreateUserInput) => {
       role: true,
     },
   });
+
+  await logAction(performerId, 'CREATE', 'USER', user.id, { email: user.email, role: user.role });
+  return user;
 };
 
-export const updateUser = async (id: string, input: UpdateUserInput) => {
-  return prisma.user.update({
+export const updateUser = async (id: string, input: UpdateUserInput, performerId: string) => {
+  const user = await prisma.user.update({
     where: { id },
     data: input,
     select: {
@@ -40,4 +44,7 @@ export const updateUser = async (id: string, input: UpdateUserInput) => {
       role: true,
     },
   });
+
+  await logAction(performerId, 'UPDATE', 'USER', user.id, input);
+  return user;
 };

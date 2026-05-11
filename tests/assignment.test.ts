@@ -90,7 +90,7 @@ describe('Assignment Management Module', () => {
 
     // Verify Audit Log
     const auditLog = await prisma.auditLog.findFirst({
-      where: { action: 'CREATE', resource: 'ASSIGNMENT' },
+      where: { action: 'CREATE', entity: 'ASSIGNMENT' },
     });
     expect(auditLog).toBeDefined();
     expect(auditLog?.userId).toBeDefined();

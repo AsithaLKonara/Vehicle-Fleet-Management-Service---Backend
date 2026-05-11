@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { CreateVehicleInput, UpdateVehicleInput } from '../validators/vehicleValidator';
 import { VehicleStatus } from '@prisma/client';
+import { logAction } from './auditService';
 
 export const getAllVehicles = async (filters: { status?: VehicleStatus; type?: string; search?: string; page?: number; limit?: number }) => {
   const { status, type, search, page = 1, limit = 10 } = filters;
@@ -55,20 +56,27 @@ export const getVehicleById = async (id: string) => {
   });
 };
 
-export const createVehicle = async (input: CreateVehicleInput) => {
-  return prisma.vehicle.create({
+export const createVehicle = async (input: CreateVehicleInput, performerId: string) => {
+  const vehicle = await prisma.vehicle.create({
     data: input,
   });
+
+  await logAction(performerId, 'CREATE', 'VEHICLE', vehicle.id, input);
+  return vehicle;
 };
 
-export const updateVehicle = async (id: string, input: UpdateVehicleInput) => {
-  return prisma.vehicle.update({
+export const updateVehicle = async (id: string, input: UpdateVehicleInput, performerId: string) => {
+  const vehicle = await prisma.vehicle.update({
     where: { id },
     data: input,
   });
+
+  await logAction(performerId, 'UPDATE', 'VEHICLE', vehicle.id, input);
+  return vehicle;
 };
 
-export const deleteVehicle = async (id: string) => {
+export const deleteVehicle = async (id: string, performerId: string) => {
+  await logAction(performerId, 'DELETE', 'VEHICLE', id);
   return prisma.vehicle.delete({
     where: { id },
   });

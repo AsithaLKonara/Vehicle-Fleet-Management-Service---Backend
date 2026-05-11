@@ -24,16 +24,16 @@ export const getVehicle = asyncWrapper(async (req: Request, res: Response) => {
 });
 
 export const createVehicle = asyncWrapper(async (req: Request, res: Response) => {
-  const vehicle = await vehicleService.createVehicle(req.body);
+  const vehicle = await vehicleService.createVehicle(req.body, req.user!.id);
   res.status(201).json({ success: true, data: vehicle });
 });
 
 export const updateVehicle = asyncWrapper(async (req: Request, res: Response) => {
-  const vehicle = await vehicleService.updateVehicle(req.params.id as string, req.body);
+  const vehicle = await vehicleService.updateVehicle(req.params.id as string, req.body, req.user!.id);
   res.status(200).json({ success: true, data: vehicle });
 });
 
 export const deleteVehicle = asyncWrapper(async (req: Request, res: Response) => {
-  await vehicleService.deleteVehicle(req.params.id as string);
+  await vehicleService.deleteVehicle(req.params.id as string, req.user!.id);
   res.status(204).send();
 });

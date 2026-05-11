@@ -8,11 +8,11 @@ export const listUsers = asyncWrapper(async (req: Request, res: Response) => {
 });
 
 export const createUser = asyncWrapper(async (req: Request, res: Response) => {
-  const user = await userService.createUser(req.body);
+  const user = await userService.createUser(req.body, req.user!.id);
   res.status(201).json({ success: true, data: user });
 });
 
 export const updateUser = asyncWrapper(async (req: Request, res: Response) => {
-  const user = await userService.updateUser(req.params.id as string, req.body);
+  const user = await userService.updateUser(req.params.id as string, req.body, req.user!.id);
   res.status(200).json({ success: true, data: user });
 });
