@@ -25,7 +25,10 @@ export const createAssignment = async (input: CreateAssignmentInput, userId: str
 
     // 2. Create assignment
     const assignment = await tx.assignment.create({
-      data: input,
+      data: {
+        ...input,
+        assignedById: userId,
+      },
     });
 
     // 3. Update vehicle status
@@ -35,7 +38,7 @@ export const createAssignment = async (input: CreateAssignmentInput, userId: str
     });
 
     // 4. Log Action
-    await logAction(userId, 'CREATE', 'ASSIGNMENT', { assignmentId: assignment.id, vehicleId: input.vehicleId }, tx);
+    await logAction(userId, 'CREATE', 'ASSIGNMENT', assignment.id, { vehicleId: input.vehicleId }, tx);
 
     return assignment;
   });
@@ -65,7 +68,7 @@ export const returnVehicle = async (id: string, userId: string) => {
     });
 
     // 4. Log Action
-    await logAction(userId, 'RETURN', 'ASSIGNMENT', { assignmentId: id, vehicleId: assignment.vehicleId }, tx);
+    await logAction(userId, 'RETURN', 'ASSIGNMENT', id, { vehicleId: assignment.vehicleId }, tx);
 
     return updatedAssignment;
   });

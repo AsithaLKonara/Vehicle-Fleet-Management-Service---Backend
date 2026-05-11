@@ -6,8 +6,9 @@ export type AuditClient = Prisma.TransactionClient | typeof prisma;
 export const logAction = async (
   userId: string, 
   action: string, 
-  resource: string, 
-  details?: Prisma.InputJsonValue,
+  entity: string, 
+  entityId: string,
+  metadata?: Prisma.InputJsonValue,
   client: AuditClient = prisma
 ) => {
   try {
@@ -15,8 +16,9 @@ export const logAction = async (
       data: {
         userId,
         action,
-        resource,
-        details: details || {},
+        entity,
+        entityId,
+        metadata: metadata || {},
       },
     });
   } catch (error) {
